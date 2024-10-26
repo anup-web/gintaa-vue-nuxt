@@ -1,0 +1,25 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "MK55K2A9V3.com.asconsoft.gintaa.dev",
+                "paths": [
+                    "*"
+                ]
+            },
+            {
+                "appID": "MK55K2A9V3.com.asconsoft.gintaa.beta",
+                "paths": [
+                    "*"
+                ]
+            },
+            {
+                "appID": "MK55K2A9V3.com.asconsoft.gintaa.prod",
+                "paths": [
+                    "*"
+                ]
+            }
+        ]
+    }
+}

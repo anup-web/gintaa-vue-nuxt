@@ -1,0 +1,428 @@
+<template>
+    <div class="bg-gray-100 shipment-tracking-page pt-[80px] lg:pt-12">
+        <!--//////////header///////////-->
+        <GintaaFoodConsumerHeader />
+        <noListing v-if="showNoLisitngPage"></noListing>
+        <!--////////Breadcrumb//////////-->
+        <div class="mx-auto max-w-[1920px] md:px-8 2xl:px-16 pt-10 hidden md:flex">
+            <breadcrumb :breadcrumb="breadcrumb" />
+        </div>
+        <div class="container max-w-2xl mx-auto pt-10 sm:pt-10 px-4 md:pt-5 md:px-8 2xl:px-16">
+           
+                <div class="w-full rounded px-6 py-4 bg-white mb-10">                    
+
+                        <div v-if="orderDet"
+                            class="w-full">
+                            <div class="w-full flex flex-col">
+                                <div class="flex">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-20 h-16">
+                                             <img v-if="orderDet.restaurant.photoUrl" :src="orderDet.restaurant.photoUrl" alt="icon" class="object-cover  max-h-full w-[100%] transition duration-200 ease-in rounded-md">
+                                             <img v-else src="~/assets/images/food/consumer/restaurant-no-image.jpg" alt="icon" class="object-cover  max-h-full w-[100%] transition duration-200 ease-in rounded-md">
+                                        </div>
+                                    </div>
+                                    <div class="ml-4 flex flex-1 flex-col ">
+                                        <div class="text-left text-base font-medium text-gray-700">
+                                            {{ orderDet.restaurant.name }}</div>
+                                        <div class="text-left text-[13px] text-gray-700 mt-1">
+                                            {{ getAddressitemDet(orderDet.restaurant.location) }}</div>
+                                        <div class="text-gray-500 text-xs mt-1 flex items-center">
+                                            <svg width="8" height="14" viewBox="0 0 8 14" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M6.1875 0.21875H1.8125C1.34853 0.219271 0.903715 0.403813 0.575639 0.731889C0.247563 1.05996 0.0630211 1.50478 0.0625 1.96875V12.0312C0.0630211 12.4952 0.247563 12.94 0.575639 13.2681C0.903715 13.5962 1.34853 13.7807 1.8125 13.7812H6.1875C6.65147 13.7807 7.09629 13.5962 7.42436 13.2681C7.75244 12.94 7.93698 12.4952 7.9375 12.0312V1.96875C7.93698 1.50478 7.75244 1.05996 7.42436 0.731889C7.09629 0.403813 6.65147 0.219271 6.1875 0.21875ZM0.5 2.40625H7.5V10.7188H0.5V2.40625ZM1.8125 0.65625H6.1875C6.53549 0.656597 6.86913 0.79499 7.11519 1.04106C7.36126 1.28712 7.49965 1.62076 7.5 1.96875H0.5C0.500347 1.62076 0.63874 1.28712 0.884806 1.04106C1.13087 0.79499 1.46451 0.656597 1.8125 0.65625ZM6.1875 13.3438H1.8125C1.46451 13.3434 1.13087 13.205 0.884806 12.9589C0.63874 12.7129 0.500347 12.3792 0.5 12.0312V11.1562H7.5V12.0312C7.49965 12.3792 7.36126 12.7129 7.11519 12.9589C6.86913 13.205 6.53549 13.3434 6.1875 13.3438Z"
+                                                    fill="#696969" />
+                                            </svg>
+
+
+                                            <span class="ml-1.5">{{ remove91ToPhoneNumber(orderDet.restaurant.phoneNumber)
+                                            }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div v-if="orderDet.invoiceUrl" class="w-full flex justify-start mt-6">
+                                    <a :href="orderDet.invoiceUrl" target="_blank"
+                                        class=" cursor-pointer border border-green flex justify-center items-center bg-transparent px-4 py-2 h-8 rounded text-green font-normal text-sm">
+                                        <span>{{ $t('downloadInvoice') }}</span></a>
+                                </div>
+
+                                <div class="mt-6">
+                                    <div v-if="orderDet.orderDetails && orderDet.orderDetails.length"
+                                        class="text-sm text-gray-900 font-medium">{{ orderDet.orderDetails.length }} ITEM<span v-if="orderDet.orderDetails.length > 1">S</span>
+                                    </div>
+                                    <div class="mt-3">
+                                        <div v-if="orderDet.orderDetails && orderDet.orderDetails.length > 0"
+                                            class="border-dashed border-b border-gray-200">
+                                            <div v-for="item in orderDet.orderDetails" :key="item.foodListingId"
+                                                class="flex items-center justify-between mb-3">
+                                                <div class="text-sm text-gray-900 flex items-center">
+                                                    <svg v-if="item.type === 'VEG'" width="16" height="16"
+                                                        viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <rect x="0.5" y="0.5" width="19" height="18" stroke="#1FBE58">
+                                                        </rect>
+                                                        <circle cx="10" cy="9" r="5" fill="#1FBE58"></circle>
+                                                    </svg>
+
+                                                    <svg v-if="item.type === 'NON_VEG'" width="16" height="16"
+                                                        viewBox="0 0 20 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <rect x="0.5" y="0.5" width="19" height="18" stroke="#EE1029">
+                                                        </rect>
+                                                        <circle cx="10" cy="9" r="5" fill="#EE1029"></circle>
+                                                    </svg>
+                                                    <span class="ml-4">{{item.quantity}} X {{ item.name }}</span>
+                                                </div>
+
+                                                <div class="flex items-center text-base text-gray-900 ">
+                                                    <svg width="12" height="12" viewBox="0 0 12 21" fill="none">
+                                                        <path opacity="0.7" fill-rule="evenodd" clip-rule="evenodd"
+                                                            d="M0 0.899857C0 0.402883 0.402877 6.41971e-06 0.89985 6.398e-06L11.1001 5.95252e-06C11.5971 5.93082e-06 12 0.402883 12 0.899856C12 1.39683 11.5971 1.79971 11.1001 1.79971L8.48344 1.79971C9.31657 2.64601 9.89112 3.73607 10.0833 4.9492H11.1001C11.5971 4.9492 12 5.35208 12 5.84905C12 6.34602 11.5971 6.7489 11.1001 6.7489H10.0833C9.63929 9.55203 7.15366 11.6981 4.15385 11.6981H2.61079L10.119 19.0174C10.4795 19.3688 10.4795 19.9386 10.119 20.29C9.75851 20.6414 9.17405 20.6414 8.81356 20.29L0 11.6982L6.84803e-05 11.6981H0V10.8984C0 10.3461 0.447715 9.8984 1 9.8984H4.15385C6.1307 9.8984 7.78502 8.5522 8.20477 6.7489L0.899851 6.7489C0.402877 6.7489 0 6.34602 0 5.84905C0 5.35208 0.402877 4.9492 0.899851 4.9492L8.20476 4.9492C7.785 3.14592 6.13069 1.79974 4.15385 1.79974H0.899851C0.402877 1.79974 0 1.39686 0 0.899889V0.899857Z"
+                                                            fill="black" />
+                                                    </svg>
+                                                    <span class="pl-0.5">{{ item.price }}</span>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                        <div class="flex items-center justify-between py-3">
+                                            <div class="flex items-center text-sm uppercase text-gray-700 font-medium ">
+                                                <span>{{ $t('itemTotal') }}</span>
+                                            </div>
+                                            <div class="flex items-center text-base text-gray-900 font-medium">
+                                                <svg width="12" height="12" viewBox="0 0 14 25" fill="none">
+                                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                                        d="M0 1.00005V1C0 0.447716 0.447715 5.48196e-07 1 5.24076e-07L13 0C13.5523 -2.41198e-08 14 0.447715 14 1V1.09965C14 1.65194 13.5523 2.09965 13 2.09965L9.89734 2.09965C10.8693 3.08702 11.5396 4.35878 11.7638 5.77412H13C13.5523 5.77412 14 6.22184 14 6.77412V6.87378C14 7.42606 13.5523 7.87378 13 7.87378H11.7638C11.2458 11.1441 8.34591 13.6478 4.84615 13.6478H3.04603L11.8509 22.2311C12.2464 22.6167 12.2464 23.2417 11.8509 23.6272L11.76 23.7158C11.3646 24.1013 10.7234 24.1013 10.3279 23.7158L0 13.6478V13.6478V12.5481C0 11.9959 0.447714 11.5481 0.999999 11.5481H4.84615C7.15247 11.5481 9.0825 9.9776 9.57222 7.87378L1 7.87378C0.447716 7.87378 0 7.42606 0 6.87378V6.77412C0 6.22184 0.447715 5.77412 1 5.77412L9.57223 5.77412C9.08253 3.67027 7.15249 2.0997 4.84615 2.0997H1C0.447715 2.0997 0 1.65199 0 1.0997V1.09965V1.00005Z"
+                                                        fill="black" />
+                                                </svg>
+                                                <span class="pl-0.5 text-gray-900">{{ tofixedTwoDigit(orderDet.totalItemAmount) }}</span>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="w-full flex items-end justify-end">
+                                        <div class="relative flex flex-col items-end group">
+                                            <div class="text-right text-[11px] text-[#02b102] font-medium flex justify-end">VIEW BILL DETAILS
+                                            </div>
+                                            <div
+                                                class="absolute bottom-0 flex flex-col items-center hidden mb-6 group-hover:flex ">
+                                                <span
+                                                    class="relative z-10 p-2 text-xs leading-none text-white whitespace-no-wrap bg-white shadow-lg w-72 rounded">
+
+                                                    <div class="w-full ">
+
+                                                        <div class="text-sm uppercase text-gray-900">
+                                                            {{ orderDet.orderDetails.length }} ITEM<span v-if="orderDet.orderDetails.length > 1">S</span> </div>
+                                                        <div class="mt-2">
+                                                            <div class="border-dashed border-b border-gray-200">
+                                                                <div v-for="item in orderDet.orderDetails"
+                                                                    :key="item.foodListingId"
+                                                                    class="flex items-center justify-between mb-3">
+                                                                    <div class="text-sm text-gray-900 flex items-center">
+                                                                        <svg v-if="item.type === 'VEG'" width="20"
+                                                                            height="20" viewBox="0 0 20 19" fill="none"
+                                                                            xmlns="http://www.w3.org/2000/svg">
+                                                                            <rect x="0.5" y="0.5" width="19" height="18"
+                                                                                stroke="#1FBE58"></rect>
+                                                                            <circle cx="10" cy="9" r="5" fill="#1FBE58">
+                                                                            </circle>
+                                                                        </svg>
+
+                                                                        <svg v-if="item.type === 'NON_VEG'" width="20"
+                                                                            height="20" viewBox="0 0 20 19" fill="none"
+                                                                            xmlns="http://www.w3.org/2000/svg">
+                                                                            <rect x="0.5" y="0.5" width="19" height="18"
+                                                                                stroke="#EE1029"></rect>
+                                                                            <circle cx="10" cy="9" r="5" fill="#EE1029">
+                                                                            </circle>
+                                                                        </svg>
+                                                                        <span class="ml-4">{{item.quantity}} X {{ item.name }}</span>
+                                                                    </div>
+
+                                                                    <div class="flex items-center text-sm text-gray-900 ">
+                                                                        <svg width="11" height="11" viewBox="0 0 12 21"
+                                                                            fill="none">
+                                                                            <path opacity="0.7" fill-rule="evenodd"
+                                                                                clip-rule="evenodd"
+                                                                                d="M0 0.899857C0 0.402883 0.402877 6.41971e-06 0.89985 6.398e-06L11.1001 5.95252e-06C11.5971 5.93082e-06 12 0.402883 12 0.899856C12 1.39683 11.5971 1.79971 11.1001 1.79971L8.48344 1.79971C9.31657 2.64601 9.89112 3.73607 10.0833 4.9492H11.1001C11.5971 4.9492 12 5.35208 12 5.84905C12 6.34602 11.5971 6.7489 11.1001 6.7489H10.0833C9.63929 9.55203 7.15366 11.6981 4.15385 11.6981H2.61079L10.119 19.0174C10.4795 19.3688 10.4795 19.9386 10.119 20.29C9.75851 20.6414 9.17405 20.6414 8.81356 20.29L0 11.6982L6.84803e-05 11.6981H0V10.8984C0 10.3461 0.447715 9.8984 1 9.8984H4.15385C6.1307 9.8984 7.78502 8.5522 8.20477 6.7489L0.899851 6.7489C0.402877 6.7489 0 6.34602 0 5.84905C0 5.35208 0.402877 4.9492 0.899851 4.9492L8.20476 4.9492C7.785 3.14592 6.13069 1.79974 4.15385 1.79974H0.899851C0.402877 1.79974 0 1.39686 0 0.899889V0.899857Z"
+                                                                                fill="black" />
+                                                                        </svg>
+                                                                        <span class="pl-0.5">{{ item.price }}</span>
+
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div class="flex items-center justify-between py-3">
+                                                                <div
+                                                                    class="flex items-center text-xs uppercase text-gray-700 font-medium ">
+                                                                    <span>{{ $t('itemTotal') }}</span>
+                                                                </div>
+                                                                <div
+                                                                    class="flex items-center text-sm text-gray-900 font-medium">
+                                                                    <svg width="11" height="11" viewBox="0 0 14 25"
+                                                                        fill="none">
+                                                                        <path fill-rule="evenodd" clip-rule="evenodd"
+                                                                            d="M0 1.00005V1C0 0.447716 0.447715 5.48196e-07 1 5.24076e-07L13 0C13.5523 -2.41198e-08 14 0.447715 14 1V1.09965C14 1.65194 13.5523 2.09965 13 2.09965L9.89734 2.09965C10.8693 3.08702 11.5396 4.35878 11.7638 5.77412H13C13.5523 5.77412 14 6.22184 14 6.77412V6.87378C14 7.42606 13.5523 7.87378 13 7.87378H11.7638C11.2458 11.1441 8.34591 13.6478 4.84615 13.6478H3.04603L11.8509 22.2311C12.2464 22.6167 12.2464 23.2417 11.8509 23.6272L11.76 23.7158C11.3646 24.1013 10.7234 24.1013 10.3279 23.7158L0 13.6478V13.6478V12.5481C0 11.9959 0.447714 11.5481 0.999999 11.5481H4.84615C7.15247 11.5481 9.0825 9.9776 9.57222 7.87378L1 7.87378C0.447716 7.87378 0 7.42606 0 6.87378V6.77412C0 6.22184 0.447715 5.77412 1 5.77412L9.57223 5.77412C9.08253 3.67027 7.15249 2.0997 4.84615 2.0997H1C0.447715 2.0997 0 1.65199 0 1.0997V1.09965V1.00005Z"
+                                                                            fill="black" />
+                                                                    </svg>
+                                                                    <span class="pl-0.5 text-gray-900">{{
+                                                                        tofixedTwoDigit(orderDet.totalItemAmount) }}</span>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div v-if="!orderDet.deliveryCharge"
+                                                                class="flex items-center justify-between mb-3">
+                                                                <div class="text-sm text-gray-900">{{ $t('deliveryFee') }}</div>
+                                                                <div class="text-sm text-gray-900 "> {{ $t('premiumFree') }} </div>
+                                                            </div>
+                                                            <div v-else class="flex items-center justify-between mb-3">
+                                                                <div class="text-sm text-gray-900">{{ $t('deliveryCharges') }}</div>
+                                                                <div class="text-sm text-gray-900 ">
+                                                                    {{ tofixedTwoDigit(orderDet.deliveryCharge) }} </div>
+                                                            </div>
+                                                            <!-- <div v-if="orderDet.restaurantDiscountPercent"  class="flex items-center justify-between mb-3">
+                                                                <div class="text-sm text-[#81CE03]">Resturant Discount Parcentage</div>
+                                                                <div class="text-sm text-[#81CE03] "> {{orderDet.restaurantDiscountPercent}} </div>
+                                                            </div> -->
+                                                            <div v-if="orderDet.restaurantDiscountAmount"
+                                                                class="flex items-center justify-between mb-3">
+                                                                <div class="text-sm text-[#02b102]">{{ $t('restaurantDiscount') }}<span
+                                                                        v-if="orderDet.restaurantDiscountPercent">({{ orderDet.restaurantDiscountPercent }}
+                                                                        %)</span> </div>
+                                                                <div class="text-sm text-[#02b102] ">-
+                                                                    {{ tofixedTwoDigit(orderDet.restaurantDiscountAmount) }} </div>
+                                                            </div>
+
+                                                            <div v-if="orderDet.gintaaDiscountAmount"
+                                                                class="flex items-center justify-between mb-3">
+                                                                <div class="text-sm text-[#02b102]">{{ $t('gintaaDiscount') }}<span
+                                                                        v-if="orderDet.gintaaDiscountPercent">({{ orderDet.gintaaDiscountPercent }}
+                                                                        %)</span> </div>
+                                                                <div class="text-sm text-[#02b102] ">-
+                                                                    {{ tofixedTwoDigit(orderDet.gintaaDiscountAmount) }} </div>
+                                                            </div>
+                                                         
+                                                            <div v-if="orderDet.coinsUsed" class="flex items-center justify-between mb-3">                                                                
+                                                                <div class="flex items-center">
+                                                                    <div class="text-sm text-gray-500">gintaa Coin Used</div>
+                                                                    <img src="~/assets/images/coin.svg" class="pl-1 w-[18px]">
+                                                                </div>    
+                                                                <div class="text-sm text-gray-900 pl-0.5"> - {{orderDet.coinsUsed}}</div>
+                                                            </div>
+
+                                                            <div class="flex items-center justify-between mb-3">
+                                                                <div class="text-sm text-gray-500">{{ $t('foodTaxes') }}</div>
+                                                                <div class="flex items-center text-sm text-gray-900 ">
+                                                                    <svg width="11" height="11" viewBox="0 0 12 21"
+                                                                        fill="none">
+                                                                        <path opacity="0.7" fill-rule="evenodd"
+                                                                            clip-rule="evenodd"
+                                                                            d="M0 0.899857C0 0.402883 0.402877 6.41971e-06 0.89985 6.398e-06L11.1001 5.95252e-06C11.5971 5.93082e-06 12 0.402883 12 0.899856C12 1.39683 11.5971 1.79971 11.1001 1.79971L8.48344 1.79971C9.31657 2.64601 9.89112 3.73607 10.0833 4.9492H11.1001C11.5971 4.9492 12 5.35208 12 5.84905C12 6.34602 11.5971 6.7489 11.1001 6.7489H10.0833C9.63929 9.55203 7.15366 11.6981 4.15385 11.6981H2.61079L10.119 19.0174C10.4795 19.3688 10.4795 19.9386 10.119 20.29C9.75851 20.6414 9.17405 20.6414 8.81356 20.29L0 11.6982L6.84803e-05 11.6981H0V10.8984C0 10.3461 0.447715 9.8984 1 9.8984H4.15385C6.1307 9.8984 7.78502 8.5522 8.20477 6.7489L0.899851 6.7489C0.402877 6.7489 0 6.34602 0 5.84905C0 5.35208 0.402877 4.9492 0.899851 4.9492L8.20476 4.9492C7.785 3.14592 6.13069 1.79974 4.15385 1.79974H0.899851C0.402877 1.79974 0 1.39686 0 0.899889V0.899857Z"
+                                                                            fill="black" />
+                                                                    </svg>
+                                                                    <span class="pl-0.5">{{ tofixedTwoDigit(orderDet.gstAmount) }}</span>
+
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div
+                                                                class="border-t border-gray-300 pt-2 flex items-center justify-between ">
+                                                                <div class="text-xs text-gray-900 uppercase font-medium">
+                                                                    {{ $t('billTotal') }}
+                                                                </div>
+                                                                <div
+                                                                    class="flex items-center text-sm text-gray-900 font-medium">
+                                                                    <svg width="11" height="11" viewBox="0 0 12 21"
+                                                                        fill="none">
+                                                                        <path opacity="0.7" fill-rule="evenodd"
+                                                                            clip-rule="evenodd"
+                                                                            d="M0 0.899857C0 0.402883 0.402877 6.41971e-06 0.89985 6.398e-06L11.1001 5.95252e-06C11.5971 5.93082e-06 12 0.402883 12 0.899856C12 1.39683 11.5971 1.79971 11.1001 1.79971L8.48344 1.79971C9.31657 2.64601 9.89112 3.73607 10.0833 4.9492H11.1001C11.5971 4.9492 12 5.35208 12 5.84905C12 6.34602 11.5971 6.7489 11.1001 6.7489H10.0833C9.63929 9.55203 7.15366 11.6981 4.15385 11.6981H2.61079L10.119 19.0174C10.4795 19.3688 10.4795 19.9386 10.119 20.29C9.75851 20.6414 9.17405 20.6414 8.81356 20.29L0 11.6982L6.84803e-05 11.6981H0V10.8984C0 10.3461 0.447715 9.8984 1 9.8984H4.15385C6.1307 9.8984 7.78502 8.5522 8.20477 6.7489L0.899851 6.7489C0.402877 6.7489 0 6.34602 0 5.84905C0 5.35208 0.402877 4.9492 0.899851 4.9492L8.20476 4.9492C7.785 3.14592 6.13069 1.79974 4.15385 1.79974H0.899851C0.402877 1.79974 0 1.39686 0 0.899889V0.899857Z"
+                                                                            fill="black" />
+                                                                    </svg>
+                                                                    <span class="pl-0.5">{{ tofixedTwoDigit(orderDet.amountPayable) }}</span>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                                <div
+                                                    class="w-3 h-3 absolute bottom-[-4px] right-[39px] z-20 rotate-45 bg-white">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="w-full">
+                                    <div class="w-full flex flex-col mt-4">
+                                        <div class="text-gray-900 text-base mr-5 font-medium">{{ $t('deliveryAddress') }}</div>
+                                    </div>
+                                    <div class="w-full mt-2">
+                                        <div class="text-gray-500 text-xs mt-0.5"> {{orderDet.userName}} <span v-if="orderDet.userName">,</span>  <span>{{remove91ToPhoneNumber(orderDet.mobile)}}</span>
+                                        </div>
+                                        <div class="text-gray-500 text-xs mt-1"> {{
+                                            getAddressitemDet(orderDet.deliveryAddress) }}</div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                   
+                </div>
+
+           
+
+        </div>
+        <!--footer section goes here-->
+        <GintaaFoodConsumerFooter />
+
+
+
+
+    </div>
+</template>
+    
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+    name: 'oderid',
+    components: {},
+    data() {
+        return {
+            breadcrumb: [
+                {
+                    name: 'Food Order Details'
+                }
+            ],
+            showNoLisitngPage: false,
+            showAddaddressPopup: false,
+            page: 0,
+            defaultSize: 20,
+            loading: true,
+            resturantDet: null,
+
+            allMenuList: [],
+            vegMenuList: [],
+            nonVegMenuList: [],
+            orderDet: null
+        }
+    },
+
+    async fetch() {
+        try {
+            const data = await this.$axios.get(`${this.$config.API_BASE}/forder/v1/order/${this.$route.params.oderid}`)
+            this.orderDet = data?.data?.payload
+            console.log("this.orderDet",this.orderDet)
+          
+        } catch (error) {
+            if (error && (error?.response?.status === 404 || error?.response?.status === 403)) {
+                this.showNoLisitngPage = true
+            }
+
+        }
+    },
+    mounted() {
+        // console.log("this.$route.params.id",this.$route.params.id,this.$route.params.orderid,this.$route.params.oderid)
+
+    },
+    methods: {
+
+        remove91ToPhoneNumber(phone: any) {
+            // console.log("remove91ToPhoneNumber",phone)
+            if (phone === "") {
+                return "";
+            } else {
+                let replaceString = "+91";
+                if (phone && phone.includes(replaceString)) {
+                    phone = phone.replace(replaceString, "");
+                }
+                return phone;
+            }
+        },
+        
+        tofixedTwoDigit(priceval: any) {
+            if (priceval) {
+                return priceval.toFixed(2)
+            }
+        },
+        getAddressitemDet(addressItemDet: any) {
+            const addDetArray = []
+            if (addressItemDet) {
+                addDetArray.push(addressItemDet?.addressLine, addressItemDet?.flatNo, addressItemDet?.area,
+                    addressItemDet?.city, addressItemDet?.landmark, addressItemDet?.state, addressItemDet?.zip)
+            }
+            if (addDetArray.length) {
+                var filtered = addDetArray.filter(function (el) {
+                    return el != null;
+                });
+                return filtered.join();
+            }
+        },
+
+        remove91ToPhoneNumber(phone: any) {
+            //console.log("remove91ToPhoneNumber",phone)
+            if (phone === "") {
+                return "";
+            } else {
+                let replaceString = "+91";
+                if (phone && phone.includes(replaceString)) {
+                    phone = phone.replace(replaceString, "");
+                }
+                return phone;
+            }
+        },
+    }
+})
+
+</script>
+    
+<style>
+.-z-1 {
+    z-index: -1;
+}
+
+.origin-0 {
+    transform-origin: 0%;
+}
+
+input[type="text"]:focus~label,
+input[type="email"]:focus~label,
+input[type="text"]:not(:placeholder-shown)~label,
+input[type="email"]:not(:placeholder-shown)~label,
+textarea:focus~label,
+textarea:not(:placeholder-shown)~label,
+select:focus~label,
+select:not([value='']):valid~label {
+    /* @apply transform; scale-75; -translate-y-6; */
+    --tw-translate-x: 0;
+    --tw-translate-y: 0;
+    --tw-rotate: 0;
+    --tw-skew-x: 0;
+    --tw-skew-y: 0;
+    transform: translateX(var(--tw-translate-x)) translateY(var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+    --tw-scale-x: 0.75;
+    --tw-scale-y: 0.75;
+    --tw-translate-y: -1.5rem;
+}
+
+input[type="text"]:focus~label,
+input[type="email"]:focus~label,
+select:focus~label {
+    /* @apply text-black; left-0; */
+    --tw-text-opacity: 1;
+    color: rgba(72, 206, 243, var(--tw-text-opacity));
+    left: 0px;
+}</style>
+    
+    

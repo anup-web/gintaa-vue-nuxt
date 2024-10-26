@@ -1,0 +1,38 @@
+[
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.asconsoft.gintaa.dev",
+        "sha256_cert_fingerprints":
+          ["16:55:4D:09:AB:C1:B6:71:0E:18:87:68:52:2E:84:DF:BC:C9:5A:BC:3D:C0:E5:0C:F3:BB:4E:17:87:1B:13:6F"]
+      }
+    },
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.asconsoft.gintaa.alpha",
+        "sha256_cert_fingerprints":
+          ["0B:75:44:C1:34:86:CA:EA:D3:46:27:E5:57:8C:3B:F8:BF:BC:30:EB:3F:90:A4:48:2F:FD:6A:58:52:50:1F:98"]
+      }
+    },
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.asconsoft.gintaa.beta",
+        "sha256_cert_fingerprints":
+          ["AC:B5:13:91:13:1C:5F:65:4A:BA:46:AA:91:E0:DE:F4:FB:2F:67:A3:8F:69:FE:56:4E:84:F5:BD:CD:4F:34:A7"]
+      }
+    },
+    {
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "com.asconsoft.gintaa.prod",
+        "sha256_cert_fingerprints":
+          ["24:FA:66:8B:AF:02:A1:27:4A:14:09:5E:DA:C9:0B:A2:B9:CF:D6:86:79:7C:21:15:5F:0C:9F:36:CA:05:2B:B5"]
+      }
+    }
+  ]

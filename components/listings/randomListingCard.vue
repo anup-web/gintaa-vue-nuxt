@@ -1,0 +1,346 @@
+<template>
+  <div class="recentcardtop">
+    <div
+      class="
+        group
+        box-border
+        overflow-hidden
+        flex
+        cursor-pointer
+        items-start
+        bg-white
+        transition
+        duration-200
+        ease-in-out
+        transform
+        border-b border-gray-200
+        relative
+      "
+    >
+      <a
+        class="flex w-full pt-4 pb-3 relative"
+        :href="localePath(getListingDetailsLink)"
+        target="_blank"
+      >
+        <div class="w-[150px] lg:w-[250px] 2xl:w-[280px] absolute left-0 ">
+          <div class="w-[150px] lg:w-[250px] 2xl:w-[280px] h-[150px] md:h-[200px] xl:h-[260px] p-4 border-gray-200 border rounded-md table-cell align-middle">
+            <img
+              
+              :src="getImageUrl(listing)"
+              :alt="getImageOid(listing)"
+              class="
+                
+                
+                max-h-[100%] max-w-[100%]
+                transition
+                duration-200
+                ease-in
+                group-hover:rounded-b-none
+                hover:rounded-none
+                mx-auto
+              "
+            />
+            <!-- <img
+              v-else
+              src="~/assets/images/uplaod-default-img.png"
+              :alt="listing.image.url"
+              class="
+                bg-gray-300
+                object-cover
+                max-h-[100%] max-w-[100%]
+                transition
+                duration-200
+                ease-in
+                group-hover:rounded-b-none
+                hover:rounded-none
+                mx-auto
+              "
+            /> -->
+          </div>
+        </div>
+        <div class="w-full pl-[150px] lg:pl-[250px] 2xl:pl-[280px] min-h-[180px] md:min-h-[200px] xl:min-h-[260px]">
+          <div class="flex w-full flex-col xl:flex-row gap-4">
+            <div class="w-6/6 md:w-6/6 xl:w-3/6 2xl:w-2/6">
+              <div class="md:pl-7 pl-5 pr-2 md:pr-0">
+                <h2
+                  class="
+                    text-heading
+                    font-medium
+                    mb-3
+                    text-[14px]
+                    md:text-[15px]
+                    lg:text-[15px]
+                    text-gray-600 break-words
+                  "
+                >
+                  {{ listing.name  }}
+                </h2>
+
+              <div class="flex items-center mb-3">
+                <div class="relative text-gray-600 text-xs 2xl:text-[18px] lg:text-[18px] font-bold w-full flex items-start flex-col sm:flex-row sm:items-center md:flex-row md:items-center lg:flex-row lg:items-center xl:flex-row xl:items-center 2xl:flex-row 2xl:items-center prod-price ">
+                  <!-- <span> {{$t('valueText')}} : </span> -->
+                  <span class="relative float-left items-center mr-[8px] pl-[10px] font-medium ranl-coin">
+                 
+                    <svg width="6" height="11" viewBox="0 0 11 18" fill="none" class="absolute top-[1px] left-[2px]">
+                                  <path opacity="0.7" fill-rule="evenodd" clip-rule="evenodd" d="M0 0.787369C0 0.352518 0.352517 0 0.787369 0H9.71263C10.1475 0 10.5 0.352517 10.5 0.787369C10.5 1.22222 10.1475 1.57474 9.71263 1.57474L7.423 1.57474C8.15198 2.31524 8.65471 3.26904 8.82286 4.33052H9.71263C10.1475 4.33052 10.5 4.68304 10.5 5.11789C10.5 5.55274 10.1475 5.90526 9.71263 5.90526H8.82288C8.4344 8.35801 6.25946 10.2358 3.63462 10.2358H2.28446L8.85412 16.6402C9.16954 16.9477 9.16954 17.4462 8.85412 17.7537C8.5387 18.0612 8.02729 18.0612 7.71187 17.7537L0 10.2359L3.52184e-05 10.2358H0V9.6611C0 9.10882 0.447716 8.6611 1 8.6611H3.63462C5.36438 8.6611 6.81192 7.48316 7.17918 5.90526L0.78737 5.90526C0.352518 5.90526 0 5.55274 0 5.11789C0 4.68304 0.352517 4.33052 0.787369 4.33052L7.17915 4.33052C6.81185 2.75267 5.36434 1.57478 3.63462 1.57478H0.787369C0.352517 1.57478 0 1.22226 0 0.787408V0.787369Z" fill="black" />
+                    </svg>
+                    {{ listing.unitOfferValuation }}
+                  </span>
+                  
+                  <div class="float-left">
+                    <div class="flex items-center">
+                  <span v-if="listing.price && listing.price > listing.unitOfferValuation " class="items-center text-[12px] font-normal text-gray-500 relative flex after:left-0 after:absolute after:w-[100%] after:h-[1px] after:bg-gray-500 after:top-[7px] ">
+                        <svg width="5" height="10" viewBox="0 0 11 18" fill="none" class="mr-[1px]">
+                        <path opacity="0.7" fill-rule="evenodd" clip-rule="evenodd" d="M0 0.787369C0 0.352518 0.352517 0 0.787369 0H9.71263C10.1475 0 10.5 0.352517 10.5 0.787369C10.5 1.22222 10.1475 1.57474 9.71263 1.57474L7.423 1.57474C8.15198 2.31524 8.65471 3.26904 8.82286 4.33052H9.71263C10.1475 4.33052 10.5 4.68304 10.5 5.11789C10.5 5.55274 10.1475 5.90526 9.71263 5.90526H8.82288C8.4344 8.35801 6.25946 10.2358 3.63462 10.2358H2.28446L8.85412 16.6402C9.16954 16.9477 9.16954 17.4462 8.85412 17.7537C8.5387 18.0612 8.02729 18.0612 7.71187 17.7537L0 10.2359L3.52184e-05 10.2358H0V9.6611C0 9.10882 0.447716 8.6611 1 8.6611H3.63462C5.36438 8.6611 6.81192 7.48316 7.17918 5.90526L0.78737 5.90526C0.352518 5.90526 0 5.55274 0 5.11789C0 4.68304 0.352517 4.33052 0.787369 4.33052L7.17915 4.33052C6.81185 2.75267 5.36434 1.57478 3.63462 1.57478H0.787369C0.352517 1.57478 0 1.22226 0 0.787408V0.787369Z" fill="black" />
+                    </svg>   {{listing.price}}</span>
+                    <span v-if="listing.price && listing.price > listing.unitOfferValuation && checkOffPercentage(listing)" class="text-[13px] text-[#3B9A01] pl-[9px] font-medium">{{checkOffPercentage(listing)}}% {{ $t('cl_off') }}</span> 
+                  </div>
+                  </div>
+
+                </div>
+
+              
+
+                         <!-- //Dynamic Content start  -->
+
+                <!-- <div class="flex" v-if="listing.price && listing.price > listing.unitOfferValuation">
+                            <span   class="  text-[13px] block font-normal  pl-2 text-gray-400 line-through">
+                            {{listing.price}}
+                          </span>
+                           <span class="text-[#31b801] text-[13px] font-medium block ml-2">{{getDiscountPercentage(listing.unitOfferValuation,listing.price)}}</span>
+                        </div> -->
+                        <!-- //Dynamic Content End  -->
+</div>
+
+                <div class="flex items-center justify-between">
+                  <div
+                    class="
+                      text-[11px] text-gray-400
+                      bottom-0
+                      flex
+                      items-center
+                      relative
+                      pl-[20px]                      
+                    "
+                  >
+                    <svg
+                      width="13"
+                      height="17"
+                      viewBox="0 0 20 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="absolute left-0 top:0"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M10.5547 23.8321C10.2188 24.056 9.78066 24.0556 9.44476 23.8317L9.4419 23.8298L9.43524 23.8253L9.41232 23.8098C9.39285 23.7966 9.36508 23.7776 9.32956 23.753C9.25853 23.7038 9.15646 23.6321 9.02779 23.5392C8.77055 23.3534 8.40636 23.0822 7.97082 22.7354C7.10133 22.043 5.93939 21.0428 4.77405 19.8127C2.48426 17.3958 0 13.9019 0 10C0 7.34784 1.05357 4.8043 2.92893 2.92893C4.8043 1.05357 7.34784 0 10 0C12.6522 0 15.1957 1.05357 17.0711 2.92893C18.9464 4.8043 20 7.34784 20 10C20 13.9019 17.5157 17.3958 15.226 19.8127C14.0606 21.0428 12.8987 22.043 12.0292 22.7354C11.5936 23.0822 11.2295 23.3534 10.9722 23.5392C10.8435 23.6321 10.7415 23.7038 10.6704 23.753C10.6349 23.7776 10.6072 23.7966 10.5877 23.8098L10.5648 23.8253L10.5581 23.8298L10.556 23.8312L10.5547 23.8321ZM4.34315 4.34315C5.84344 2.84285 7.87827 2 10 2C12.1217 2 14.1566 2.84285 15.6569 4.34315C17.1571 5.84344 18 7.87827 18 10C18 13.0981 15.9843 16.1042 13.774 18.4373C12.6894 19.5822 11.6013 20.5195 10.7833 21.1708C10.4789 21.4133 10.213 21.6152 10 21.7726C9.78702 21.6152 9.52111 21.4133 9.21668 21.1708C8.39867 20.5195 7.31061 19.5822 6.22595 18.4373C4.01574 16.1042 2 13.0981 2 10C2 7.87827 2.84285 5.84344 4.34315 4.34315Z"
+                        fill="#5f5f5f"
+                      />
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M6 10C6 7.79086 7.79086 6 10 6C12.2091 6 14 7.79086 14 10C14 12.2091 12.2091 14 10 14C7.79086 14 6 12.2091 6 10ZM8 10C8 8.89543 8.89543 8 10 8C11.1046 8 12 8.89543 12 10C12 11.1046 11.1046 12 10 12C8.89543 12 8 11.1046 8 10Z"
+                        fill="#5f5f5f"
+                      />
+                    </svg>
+                    {{ listing.location.city }}
+                  </div>
+
+                  <!-- <ListingPublishDet :cDate="listing.publishedDate"/> -->
+
+                  
+                </div>
+
+                <div class="w-full text-[12px] mt-4 mb-1 font-medium text-gray-700">Sold by</div>
+                <listingUserDetails :listing="listing"/> 
+               
+              </div>
+            </div>
+            <div class="w-6/6 md:w-6/6 xl:w-3/6 2xl:w-4/6 hidden md:hidden lg:block">
+              <div class="product-features mt-4 xl:mt-0 mb-5 pl-6 relative">
+                <h2
+                  class="
+                    text-heading
+                    font-medium
+                    truncate
+                    mb-3
+                    text-[15px] text-gray-600
+                  "
+                >
+                    {{ $t('productFeatures') }}
+                </h2>
+
+                <div
+                  v-for="(item, index) in sliceFeature(listing.facets)"
+                  :key="index"
+                  class="feature-row flex w-full mb-2"
+                >
+                  <div
+                    class="
+                      feature-name
+                      lg:w-2/6
+                      2xl:w-1/6
+                      text-xs
+                      font-normal
+                      text-gray-600
+                      pr-2
+                    "
+                  >
+                    {{ item.facetName }} :
+                  </div>
+                  <div
+                    class="
+                      feature-ans
+                      lg:w-4/6
+                      2xl:w-5/6
+                      text-xsb
+                      font-medium
+                      text-gray-700
+                    "
+                  >
+                    {{ item.facetValue }} 
+                  </div>
+                </div>
+                <a :href="localePath(suggestOffer(listing.oid))"
+                    
+                
+                    class="
+                      transition-all hidden lg:inline-block 
+                      border border-firoza
+                      bg-firoza
+                      px-8
+                      sm:px-10
+                      md:px-14
+                      rounded
+                       font-medium
+                      text-base
+                      h-12
+                      leading-leading48
+                      text-white
+                      hover:bg-firoza mt-3 hover:border-firoza 2xl:absolute 2xl:right-0 2xl:bottom-[20px] 2xl:mt-0
+                    "
+                   
+                  >
+                    {{ $t('makeOffer') }}
+              </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</template>
+<script>
+import Vue from "vue";
+import {
+    mapState,
+    mapGetters
+} from 'vuex'
+export default Vue.extend({
+  name: "randomListingCard",
+  props: ["listing"],
+  computed: {
+    ...mapState({
+            authUser: state => state.authUser
+        }),
+      ...mapGetters({
+            isLoggedIn: 'isLoggedIn'
+        }),
+
+    getListingDetailsLink() {
+      //console.log("===",`/p/${listing.seOId || this.slugify(listing.name)}/${listing.offerId || listing.oid}`)
+      return `/p/${this.slugify(this.listing.seOId) || this.$createSlugUrl(this.listing)}/${
+        this.listing.offerId || this.listing.oid
+      }`;
+    },
+    imageUrl() {
+     // console.log("this.listing.image", this.listing.image.url);
+      // if (this.listing.image) {
+      //   return this.listing.image?.url;
+      // } else if (this.listing.images && this.listing.images.length > 0) {
+      //   return (
+      //     this.listing.images.filter((image) => image.cover === true)[0]?.url ||
+      //     this.listing.images[0].url
+      //   );
+        
+      // }
+
+      return null;
+    },
+
+    // slice(0, 6);
+  },
+  mounted() {
+   // console.log("--------------------------------------",this.listing.image?.url);
+  },
+
+  methods: {
+
+checkOffPercentage(productDet){
+let diffValue =  +productDet?.price - +productDet?.unitOfferValuation
+
+//console.log("diffValue",diffValue)
+ if(diffValue > 0){
+  return this.$cacculateoffpercentage(+productDet?.price,+productDet?.unitOfferValuation)
+  // return (Math.round((diffValue/ price) * 100))
+ }else{
+    return null
+ }
+},    
+  getDiscountPercentage(unitOfferVal,marketValue){
+    const disCountPer = Math.round((((marketValue-unitOfferVal)/marketValue) * 100).toFixed(2));
+    if(disCountPer > 0){
+      return '(' + disCountPer + '%' + 'Off'+')'
+    }else{
+      return null
+    }
+    //return Math.round(disCountPer)
+   },
+
+           suggestOffer(offerId) {
+            if (this.authUser == null) {
+                window.localStorage.setItem("setPath", `/offers/suggest/${offerId}`);
+                return `/login`
+            } else {
+                return `/offers/suggest/${offerId}`
+            }
+        },
+
+
+   getImageUrl(listing){
+    return listing?.image?.url
+   },
+   getImageOid(listing){
+    return listing?.oid
+   },
+    sliceFeature(productFeature) {
+      if (productFeature.length) {
+        return productFeature.slice(0, 6);
+      }
+    },
+
+    slugify(text) {
+      return text
+        .toString() // Cast to string
+        .toLowerCase() // Convert the string to lowercase letters
+        .normalize("NFD") // The normalize() method returns the Unicode Normalization Form of a given string.
+        .trim() // Remove whitespace from both sides of a string
+        .replace(/\s+/g, "-") // Replace spaces with -
+        .replace(/[^\w\-]+/g, "") // Remove all non-word chars
+        .replace(/\-\-+/g, "-"); // Replace multiple - with single -
+    },
+  },
+});
+</script>
+<style scoped>
+.recentcardtop:nth-child(5n + 0) .group {
+  border-right: 0 !important;
+}
+@media only screen and (max-width: 767px) {
+  .recentcardtop:nth-child(5n + 0) .group {
+    border-right: 1px solid rgb(229 231 235) !important;
+  }
+}
+</style>

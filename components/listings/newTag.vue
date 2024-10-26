@@ -1,0 +1,32 @@
+<template>
+
+  <div class="">  
+    <div class="absolute top-0 left-2 z-40 newver">
+    <svg width="25" height="56" viewBox="0 0 25 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 55.0149L12.1219 47.5553V0H0V55.0149ZM24.2441 55.0149L12.1221 47.5553V0H24.2441V55.0149Z" fill="#8BC63E"/>
+<path d="M7.86035 29.0928L17.8135 29.0928L17.8135 30.8086L10.6836 35.2725L17.8135 35.2725L17.8135 36.9883L7.86035 36.9883L7.86035 35.2725L15.0039 30.7949L7.86035 30.7949L7.86035 29.0928ZM16.4531 20.5342L17.8135 20.5342L17.8135 25.8184L16.4531 25.8184L16.4531 20.5342ZM7.86035 25.333L17.8135 25.333L17.8135 27.0488L7.86035 27.0488L7.86035 25.333ZM12.0166 21.2246L13.3564 21.2246L13.3564 25.8184L12.0166 25.8184L12.0166 21.2246ZM7.86035 20.5684L9.22754 20.5684L9.22754 25.8184L7.86035 25.8184L7.86035 20.5684ZM15.5781 16.6377L7.86035 14.6553L7.86035 13.6162L9.84961 13.7324L17.8135 15.8516L17.8135 16.9316L15.5781 16.6377ZM7.86035 18.1211L15.5166 16.5146L17.8135 16.3711L17.8135 17.5195L7.86035 19.8232L7.86035 18.1211ZM15.4961 11.3672L7.86035 9.78125L7.86035 8.07227L17.8135 10.376L17.8135 11.5244L15.4961 11.3672ZM7.86035 13.2129L15.5986 11.251L17.8135 10.9639L17.8135 12.0439L9.84961 14.1289L7.86035 14.2383L7.86035 13.2129Z" fill="white"/>
+</svg>
+</div>
+<div class="bg-green absolute  left-0 z-40 px-2 py-1 text-white text-xs top-[90px] lg:top-[140px] hidden showMylist">New</div>
+</div>
+</template>
+<script>
+
+import Vue from 'vue'
+export default Vue.extend({
+  name: 'newTag',
+
+})
+</script>
+
+<style>
+.fav-color path{
+  fill:#EE2a7b !important;
+}
+.my-listing-new .newver{
+  display:none !important;
+}
+.my-listing-new .showMylist{
+  display:block !important;
+}
+</style>
